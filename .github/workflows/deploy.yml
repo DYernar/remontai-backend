@@ -6,8 +6,8 @@ on:
 
 env:
   REGION: us-central1
-  SERVICE: remontai-service          # Cloud Run service name
-  REPO: remontai-repository          # Artifact Registry repo name
+  SERVICE: remontai-service
+  REPO: remontai-repository
 
 jobs:
   deploy:
@@ -17,7 +17,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Authenticate using the service account JSON from GitHub secrets
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -49,3 +48,11 @@ jobs:
             --memory 512Mi \
             --cpu 1 \
             --quiet
+
+      - name: Get Cloud Run Service URL
+        run: |
+          URL=$(gcloud run services describe ${{ env.SERVICE }} \
+            --region ${{ env.REGION }} \
+            --format 'value(status.url)')
+          echo "SERVICE_URL=$URL" >> $GITHUB_ENV
+          echo "Deployed Service URL: $URL"
