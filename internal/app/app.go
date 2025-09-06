@@ -71,6 +71,7 @@ func NewApp(
 		Host:        appHost,
 		Port:        port,
 		repo:        repo,
+		authService: auth.NewService(config, logger, repo),
 	}
 
 	return app, nil

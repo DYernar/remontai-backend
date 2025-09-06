@@ -8,8 +8,8 @@ apple_signin_credentials:
   private_key: |
 
 google_signin_credentials:
-  client_id: 
-  client_secret: 
+  client_id: 1001417706537-eur4pkc6g5je771c3hnkgq3s78u0ki1q.apps.googleusercontent.com
+  client_secret: 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
 s3_credentials: 
 
 push_notification_credentials: |
