@@ -9,7 +9,7 @@ env:
   REGION: us-central1
   SERVICE_NAME: remontai-app
   REPOSITORY: remontai-repository
-  IMAGE: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/remontai-app/remontai-repsitory
+  IMAGE: us-central1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/remontai-repository/remontai-app
 
 jobs:
   deploy:
