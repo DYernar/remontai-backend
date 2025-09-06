@@ -1,6 +1,6 @@
 app:
   env: "dev"
-  port: 9090
+  port: 8080
 apple_signin_credentials:
   team_id: 
   client_id: 

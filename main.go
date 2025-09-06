@@ -18,7 +18,7 @@ func init() {
 // @title Remontai Admin API
 // @version 1.0
 // @description Admin API Documentation
-// @host localhost:9090
+// @host localhost:8080
 // @BasePath /
 func main() {
 	env := os.Getenv("ENV")
