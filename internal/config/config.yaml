@@ -1,0 +1,16 @@
+app:
+  env: "dev"
+  port: 9090
+apple_signin_credentials:
+  team_id: 
+  client_id: 
+  key_id: 
+  private_key: |
+
+google_signin_credentials:
+  client_id: 
+  client_secret: 
+s3_credentials: 
+
+push_notification_credentials: |
+ 
