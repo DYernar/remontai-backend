@@ -23,10 +23,6 @@ COPY --from=build /app/service .
 COPY --from=build /app/internal/config/config.yaml .
 COPY --from=build /app/docs /root/docs
 
-COPY --from=build /app/static /root/static
-
-RUN mkdir -p /root/static
-
 EXPOSE 8080
 
 CMD ["./service"]
