@@ -11,7 +11,10 @@ import (
 
 	"github.com/DYernar/remontai-backend/docs"
 	"github.com/DYernar/remontai-backend/internal/config"
+	"github.com/DYernar/remontai-backend/internal/repository/postgres"
+	"github.com/DYernar/remontai-backend/internal/service/auth"
 	"github.com/gin-gonic/gin"
+	"github.com/jackc/pgx/v5/pgxpool"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"go.uber.org/zap"
@@ -20,6 +23,7 @@ import (
 const (
 	DB_ROOT_PASSWORD = "DB_ROOT_PASSWORD"
 	ENV_HOST         = "HOST"
+	ENV_DB_DSN       = "DB_DSN"
 )
 
 type App struct {
@@ -30,6 +34,9 @@ type App struct {
 	Host        string
 	Port        string
 	DBDSN       string
+
+	repo        postgres.Repository
+	authService auth.Service
 }
 
 func NewApp(
@@ -55,12 +62,15 @@ func NewApp(
 	swaggerHost = strings.ReplaceAll(swaggerHost, "https://", "")
 	swaggerHost = strings.ReplaceAll(swaggerHost, "http://", "")
 
+	repo := initDB(ctx, logger)
+
 	app := &App{
 		config:      config,
 		logger:      logger,
 		SwaggerHost: swaggerHost,
 		Host:        appHost,
 		Port:        port,
+		repo:        repo,
 	}
 
 	return app, nil
@@ -116,6 +126,12 @@ func (a *App) Run(ctx context.Context) error {
 	a.Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	a.Router.GET("/api/v1/ping", a.PingHandler)
 
+	// login
+	a.Router.POST("/api/v1/auth/login", a.LoginV1Handler)
+
+	// authorized routes
+	a.Router.GET("/api/v1/users/me", a.PassUserMiddleware(a.GetMeV1Handler))
+
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 
@@ -142,4 +158,29 @@ func (a *App) Run(ctx context.Context) error {
 	return nil
 }
 
-// 1001417706537
+func initDB(
+	ctx context.Context,
+	sugar *zap.SugaredLogger,
+) postgres.Repository {
+	dbDSN := os.Getenv(ENV_DB_DSN)
+	if dbDSN == "" {
+		dbDSN = "postgresql://neondb_owner:npg_fkLBcM78VtyI@ep-silent-art-agl4yen4-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+	}
+
+	dbConfig, err := pgxpool.ParseConfig(dbDSN)
+	if err != nil {
+		sugar.Panicf("Unable to parse config: %v", err)
+	}
+
+	dbConfig.MaxConns = 100                     // Maximum connections
+	dbConfig.MinConns = 10                      // Minimum idle connections
+	dbConfig.MaxConnLifetime = time.Minute * 25 // Recycle connections after 1 hour
+	dbConfig.MaxConnIdleTime = time.Minute * 5  // Close idle connections after 5 minutes
+
+	pool, err := pgxpool.NewWithConfig(ctx, dbConfig)
+	if err != nil {
+		sugar.Panicf("Unable to create connection pool: %v", err)
+	}
+
+	return postgres.NewRepository(pool)
+}

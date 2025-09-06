@@ -1,4 +1,33 @@
 basePath: /
+definitions:
+  app.LoginRequest:
+    properties:
+      push_token:
+        type: string
+      token:
+        type: string
+      type:
+        type: string
+    type: object
+  domain.UserModel:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      push_token:
+        type: string
+      token:
+        type: string
+      updated_at:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -6,6 +35,28 @@ info:
   title: Remontai Admin API
   version: "1.0"
 paths:
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: login request
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/app.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserModel'
+      summary: Login
+      tags:
+      - auth
   /api/v1/ping:
     get:
       description: Returns pong message
@@ -19,4 +70,19 @@ paths:
             type: object
       tags:
       - health
+  /api/v1/users/me:
+    get:
+      consumes:
+      - application/json
+      description: Get current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.UserModel'
+      summary: Get current user
+      tags:
+      - auth
 swagger: "2.0"
