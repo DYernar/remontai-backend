@@ -4,6 +4,8 @@ import (
 	"io/ioutil"
 	"log"
 
+	"github.com/caarlos0/env/v11"
+	_ "github.com/caarlos0/env/v11"
 	"gopkg.in/yaml.v2"
 )
 
@@ -11,7 +13,7 @@ type Config struct {
 	AppConfig               *AppConfig               `yaml:"app"`
 	AppleSigninCredentials  *AppleSigninCredentials  `yaml:"apple_signin_credentials"`
 	GoogleSigninCredentials *GoogleSigninCredentials `yaml:"google_signin_credentials"`
-	S3Credentials           string                   `yaml:"s3_credentials"`
+	S3Credentials           string                   `env:"S3_CREDENTIALS" envDefault:"default-value-if-not-set"`
 }
 
 type AppConfig struct {
@@ -42,6 +44,10 @@ func ParseConfig() (*Config, error) {
 	err = yaml.Unmarshal(yamlFile, &conf)
 	if err != nil {
 		log.Fatalf("Unmarshal: %v", err)
+	}
+
+	if err := env.Parse(&conf); err != nil {
+		log.Fatalf("%+v", err)
 	}
 
 	return &conf, nil

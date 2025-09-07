@@ -16,20 +16,6 @@ apple_signin_credentials:
 google_signin_credentials:
   client_id: 1001417706537-eur4pkc6g5je771c3hnkgq3s78u0ki1q.apps.googleusercontent.com
   client_secret: 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
-s3_credentials: |
-  {
-    "type": "service_account",
-    "project_id": "remontai-app",
-    "private_key_id": "42d22e07c291cc2e8a065a82881899467185906a",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCfQxcmfEixA2/y\ncWFFqnJm5OF1Yyht67d+IR8RKnvGsXwBu3gFl+PAkeXfy6jRylnxTevcsDdsu3h9\nptPmwUwyB9lTWxxU16qhnTR6IcMCsG8N2bLYh+Nvl8Oev4skopIeJbQ6ibUq7cqi\nfPfk24BD/B+01IebssXEY372TNPYzGSgXgON43HUlrrVmkhSXHtc9Joe9FhDI5ID\n+wXc78jFwelAzo+IMgz+X9fooiIgm/ibJ8QJ4u/CbXRltmCxYCo3TuIuZz72ROiO\nVYbm9S81Frx2HRNvTKdTZuTlsPm+AB3BoGnwnjhvBtQHf4cR90jjAnn4plR8OOf/\ny4qTIyVlAgMBAAECggEAMQG9kW+kFKg4nfNqmbvZyTS79dnF2pEynQLHIwqeHOWH\ngab0x0/WWu7qPAPY1nl8VMcEAZxN6c0ERjH8OaEYd7q3krFSFf9pN6L+v2g9MEon\nWi03ne6uuyuJnANX5zWJXfJ/M5YlY+jZNkfbJhavMPxXq1bMxcnslkKBknvQooDB\n8MG3emFAnCx0fmbajSyVvqBPds7w4/YyAyiN60zyCeHYKncPumDb4JT3al1OpNn6\ngcPkyNfhhEmFDXIJq18NVT6M7Y5M4BuaNuoLd5vCMd+sfTUhqN17acG+NYAtmtJB\nsIpk6ONOhUO/TgEdpB/bq2cdn6EqARtf0wDtyTZnfwKBgQDbgFoJDhsmmeNILRxK\no62WL5GmVY0QA6THgQuIV2zFVeyCwXr7XREjsDREnVwGgER0lAjRCQTOsU/nrKmr\n+cs4pUgI0LDtNVJZXoG5aJemGcdhNCwlOxtG/zNuvKpkfv2iFpz9Nl6CT9znirGF\n4QuePm2ZmJd487Gg1UVCKGsswwKBgQC5vn7rhmSpoa0svVtxpqVc4c3JWr3uXfxm\n1MgCj1Hh0XETmXrxALc6Vx2HdW9qRaBvBz/FD0RtmUl0fWXbTxrQufiNl6IrAWWX\nVhwxjf09LIZwWcePtrhteIlaDUvhRB1U2FMeyyRrdy0qkn50L5ZyJL1iOolMhaK6\n9xpdYtbitwKBgFOB6D8Lq86quypJZzsKPE8n98yFPa57BGSWNrH/OLV2tA0m2Mfq\np0uhjLESAOHESMblTtlgCgEsug6UxNRVqzf4wYgBBV6pa5PufYHxRch+hDj55VWg\nwAbprkKR6m1jVtEks0MuPRRsl8lLHbCmZookjAPkZrQwWkKrALdjsyqLAoGBAKGw\nvJeWhCZOgYvCwsmqgaTbQ+KWRWQtGL0DWaEw1dy4D7E6GBWXw+jbUO9MQVLHjaNZ\nMh/+7Fhj6deoGXTR5cvxN/c6GodJTgBxi1Vv/xSzn8xJuzjVnLJfDWIA1R8hxk7H\niYPy3p9WPVEj+UR28IYoiVvrDP46DrCmzqKgmeL9AoGBAIJ81L04ptYnYMysexGd\nrV4ywSoo4/FEk7irkzAm22PO8thxzMK+H9cDjWq1CIXHB6y3Ivyn2cglq6ycVa6m\nuQjIci23UZv6S4AD47GYhLS0eingQCndzkaH447OVRJkLwP66MBNr0deiBYBR++o\nAqTwnD3txDY6IkUkcMKzjeye\n-----END PRIVATE KEY-----\n",
-    "client_email": "remontai-storage-service@remontai-app.iam.gserviceaccount.com",
-    "client_id": "104295188477250115252",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/remontai-storage-service%40remontai-app.iam.gserviceaccount.com",
-    "universe_domain": "googleapis.com"
-  }
 
 
 push_notification_credentials: |
