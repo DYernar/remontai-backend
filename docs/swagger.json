@@ -43,6 +43,91 @@
                 }
             }
         },
+        "/api/v1/generations": {
+            "get": {
+                "description": "Get all image generations for current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "generations"
+                ],
+                "summary": "Get user image generations",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Paste the token here",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.ImageGenerationModel"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new image generation",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "generations"
+                ],
+                "summary": "Create image generation",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Room type",
+                        "name": "roomtype",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Style ID",
+                        "name": "styleid",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "file",
+                        "description": "Image file",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Paste the token here",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.ImageGenerationModel"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/ping": {
             "get": {
                 "description": "Returns pong message",
@@ -124,6 +209,57 @@
                     "type": "string"
                 },
                 "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "domain.ImageGenerateStatus": {
+            "type": "string",
+            "enum": [
+                "pending",
+                "completed",
+                "failed"
+            ],
+            "x-enum-varnames": [
+                "ImageGenerateStatusPending",
+                "ImageGenerateStatusCompleted",
+                "ImageGenerateStatusFailed"
+            ]
+        },
+        "domain.ImageGenerationModel": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "error_message": {
+                    "type": "string"
+                },
+                "generated_image_url": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "image_url": {
+                    "type": "string"
+                },
+                "prompt": {
+                    "type": "string"
+                },
+                "room_type": {
+                    "type": "string"
+                },
+                "status": {
+                    "$ref": "#/definitions/domain.ImageGenerateStatus"
+                },
+                "style_id": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
                     "type": "string"
                 }
             }

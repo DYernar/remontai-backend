@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "remontai-app",
+  "private_key_id": "79142f173181defb159b39572c7149023e62658b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDL/f1sYaX87O5/\nfiHwsD8Wxdfd07XB2j7944oEQSjV0EASSwCoc18tvSDDRLkHQBv/XXgULxakNyOU\nerD4vrWGHKcovzYiKvnqyjp9+cEnR5H4bCqfNrnrpjZrTLEkZ3ryH3VcnLt1jP3H\nU9ozIzzzXoR3rsiBJBdjJEIb8OrLkYRfzL2gAktSkfhu/f2SdHeX5P2FxADCEFUl\nWf/2LMIA44iEyD/yUkNQPr//hIrkKwWnbe+VTY1fHFucEvC5rR9PhPjM9pUaMImj\nu3OY413vrG2gQjD5Hn352svhKHiLz5ou9nFOBT9Lr4P/nn/kKHkrjT/mlzKetYLD\nMURliJdJAgMBAAECggEAC575EHMRpzKCNb4kRddsiKoVrZvxd00tGH6dbredkWyv\nMbuXGoGUEwF6u9UO62RSE/6pqBC0q/8+JifFLC6FHdJFDZOzDEhBe4gww9t2DvxL\nSwkydmaCOfP6lqtETiwc+20iXPfK0BwLmw7iV9ZykvS3/C93WbAKKwo2P+w+HAGg\nnb8uT/HgygXS7h3mUmLjJLCW1a4j0XbksRzjlCbn1PhpBlXMXqYyU+Zy7qvuw4+G\nalLvGu2WFmbsRMoPwi6tgjtpR5B29fFgYYam5fFA8IdqzaEroN9oq67nGy1Ldnsz\npHb+YLvalEQ3PA9bNqbBner4rCx1XEaijMIoC1axlwKBgQD0d1JF6Dl3OqyS3x7V\nJisCAppEq0NBqFk/tEPycEE+zIvzv4eWxM+vWiJiNUGVL6fcynRoOdLCyCLMISxw\nTd/VS/fAEpWjQqxYUuXPglk1I99xgDGgKP0rt9CeNnpG1bpQ8Z/xy+GIvqZg+kxn\nM81zx6gU7J74ymjE0VylgDvtowKBgQDVndJD8K7kwyNIbKxr6LCeTrgWQmuGUZV5\ne4mLCOL6E4P6v8d8ixnxuNN0lK9El+8NuHAoKNzyJ4zvvEq+zTUoN0H3jjQzvg3s\nne/59qUdZPU++eiBChFgTuQr8nGsSuZGJIG9wLn+VXDYrHvwTTUv7Mkvj4IdUrS0\nHMZE5moeIwKBgAPjCcnWwWMl6ayEI6db7f8gL3e8CVu344NhyFrIciEfe3Iqr2s0\nQeEV28oX8qz+jvqxtVwa30D9kaARPvWiJ1bq2EuTgBGSc88Lsl+0QNrZcSoK0b8s\nJ6pUR9rcHuGVcFrtHI/pn/JepaKRGDnj1vZqTD/Y60YlYbkPYxu2iD1lAoGBAIzu\nGzuRfYEVMKDmeXaTxHocyxx8Y33xMyE7nImqqjx8RZVXkx+akdpEqtT+BwfFCQTP\nSsdj9iiYaUX8vn9U2R4YHqBZJB2C5KLXq+wIifRzl80diQQhBUe5pJVN1SrrGzLp\ngOMUVGD0M4fve7EU7uMYX77N+fSojOlLFo98SERrAoGAee/S78tlZ/qf4PKaxmzL\n93L7MUDy1lZTCM0gvh6aRF2DUlK8wDg/1nK0zSfGIHLfgd/DP9Bnbss10O/JoXGw\nUgcC75eHMRhic8kNPG8Our/SKfdoQRKbUoG4f9M85mi6Yn4y/a6xHYU3pERF2H4C\n8Qtf+SNzTA1lWMAG2SVWMrQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "remontai-storage-service@remontai-app.iam.gserviceaccount.com",
+  "client_id": "104295188477250115252",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/remontai-storage-service%40remontai-app.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

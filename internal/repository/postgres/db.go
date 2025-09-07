@@ -17,6 +17,10 @@ type Repository interface {
 
 	// styles
 	ListStyles(ctx context.Context) ([]domain.StyleModel, error)
+
+	// image generation
+	CreateImageGeneration(ctx context.Context, imageGen domain.ImageGenerationModel) (domain.ImageGenerationModel, error)
+	GetImageGenerationsByUserId(ctx context.Context, userID string) ([]domain.ImageGenerationModel, error)
 }
 
 type repository struct {

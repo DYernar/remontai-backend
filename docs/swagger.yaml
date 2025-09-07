@@ -9,6 +9,41 @@ definitions:
       type:
         type: string
     type: object
+  domain.ImageGenerateStatus:
+    enum:
+    - pending
+    - completed
+    - failed
+    type: string
+    x-enum-varnames:
+    - ImageGenerateStatusPending
+    - ImageGenerateStatusCompleted
+    - ImageGenerateStatusFailed
+  domain.ImageGenerationModel:
+    properties:
+      created_at:
+        type: string
+      error_message:
+        type: string
+      generated_image_url:
+        type: string
+      id:
+        type: string
+      image_url:
+        type: string
+      prompt:
+        type: string
+      room_type:
+        type: string
+      status:
+        $ref: '#/definitions/domain.ImageGenerateStatus'
+      style_id:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: string
+    type: object
   domain.StyleModel:
     properties:
       created_at:
@@ -72,6 +107,63 @@ paths:
       summary: Login
       tags:
       - auth
+  /api/v1/generations:
+    get:
+      consumes:
+      - application/json
+      description: Get all image generations for current user
+      parameters:
+      - description: Paste the token here
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.ImageGenerationModel'
+            type: array
+      summary: Get user image generations
+      tags:
+      - generations
+    post:
+      consumes:
+      - multipart/form-data
+      description: Create a new image generation
+      parameters:
+      - description: Room type
+        in: formData
+        name: roomtype
+        required: true
+        type: string
+      - description: Style ID
+        in: formData
+        name: styleid
+        type: string
+      - description: Image file
+        in: formData
+        name: image
+        required: true
+        type: file
+      - description: Paste the token here
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.ImageGenerationModel'
+      summary: Create image generation
+      tags:
+      - generations
   /api/v1/ping:
     get:
       description: Returns pong message

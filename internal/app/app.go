@@ -12,7 +12,9 @@ import (
 	"github.com/DYernar/remontai-backend/docs"
 	"github.com/DYernar/remontai-backend/internal/config"
 	"github.com/DYernar/remontai-backend/internal/repository/postgres"
+	"github.com/DYernar/remontai-backend/internal/repository/s3"
 	"github.com/DYernar/remontai-backend/internal/service/auth"
+	imagegeneration "github.com/DYernar/remontai-backend/internal/service/image_generation"
 	"github.com/DYernar/remontai-backend/internal/service/styles"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -36,9 +38,12 @@ type App struct {
 	Port        string
 	DBDSN       string
 
-	repo         postgres.Repository
-	authService  auth.Service
-	styleService styles.Service
+	s3Repo s3.S3Repository
+	repo   postgres.Repository
+
+	authService     auth.Service
+	styleService    styles.Service
+	generateService imagegeneration.Service
 }
 
 func NewApp(
@@ -64,17 +69,24 @@ func NewApp(
 	swaggerHost = strings.ReplaceAll(swaggerHost, "https://", "")
 	swaggerHost = strings.ReplaceAll(swaggerHost, "http://", "")
 
+	s3Repo, err := s3.NewRepository(ctx, config.S3Credentials)
+	if err != nil {
+		return nil, err
+	}
+
 	repo := initDB(ctx, logger)
 
 	app := &App{
-		config:       config,
-		logger:       logger,
-		SwaggerHost:  swaggerHost,
-		Host:         appHost,
-		Port:         port,
-		repo:         repo,
-		authService:  auth.NewService(config, logger, repo),
-		styleService: styles.NewService(config, logger, repo),
+		config:          config,
+		logger:          logger,
+		SwaggerHost:     swaggerHost,
+		Host:            appHost,
+		Port:            port,
+		s3Repo:          s3Repo,
+		repo:            repo,
+		authService:     auth.NewService(config, logger, repo),
+		styleService:    styles.NewService(config, logger, repo),
+		generateService: imagegeneration.NewService(config, logger, s3Repo, repo),
 	}
 
 	return app, nil
@@ -136,6 +148,10 @@ func (a *App) Run(ctx context.Context) error {
 	// authorized routes
 	a.Router.GET("/api/v1/users/me", a.PassUserMiddleware(a.GetMeV1Handler))
 	a.Router.GET("/api/v1/styles", a.ListStylesV1Handler)
+
+	// generations
+	a.Router.GET("/api/v1/generations", a.PassUserMiddleware(a.GetUserGenerationsV1Handler))
+	a.Router.POST("/api/v1/generations", a.PassUserMiddleware(a.CreateImageGenerationV1Handler))
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
