@@ -13,6 +13,7 @@ import (
 	"github.com/DYernar/remontai-backend/internal/config"
 	"github.com/DYernar/remontai-backend/internal/repository/postgres"
 	"github.com/DYernar/remontai-backend/internal/service/auth"
+	"github.com/DYernar/remontai-backend/internal/service/styles"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 	swaggerFiles "github.com/swaggo/files"
@@ -35,8 +36,9 @@ type App struct {
 	Port        string
 	DBDSN       string
 
-	repo        postgres.Repository
-	authService auth.Service
+	repo         postgres.Repository
+	authService  auth.Service
+	styleService styles.Service
 }
 
 func NewApp(
@@ -65,13 +67,14 @@ func NewApp(
 	repo := initDB(ctx, logger)
 
 	app := &App{
-		config:      config,
-		logger:      logger,
-		SwaggerHost: swaggerHost,
-		Host:        appHost,
-		Port:        port,
-		repo:        repo,
-		authService: auth.NewService(config, logger, repo),
+		config:       config,
+		logger:       logger,
+		SwaggerHost:  swaggerHost,
+		Host:         appHost,
+		Port:         port,
+		repo:         repo,
+		authService:  auth.NewService(config, logger, repo),
+		styleService: styles.NewService(config, logger, repo),
 	}
 
 	return app, nil
@@ -132,6 +135,7 @@ func (a *App) Run(ctx context.Context) error {
 
 	// authorized routes
 	a.Router.GET("/api/v1/users/me", a.PassUserMiddleware(a.GetMeV1Handler))
+	a.Router.GET("/api/v1/styles", a.ListStylesV1Handler)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

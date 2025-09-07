@@ -9,6 +9,21 @@ definitions:
       type:
         type: string
     type: object
+  domain.StyleModel:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      image:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
   domain.UserModel:
     properties:
       created_at:
@@ -70,6 +85,23 @@ paths:
             type: object
       tags:
       - health
+  /api/v1/styles:
+    get:
+      consumes:
+      - application/json
+      description: Get all available interior design styles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.StyleModel'
+            type: array
+      summary: List all styles
+      tags:
+      - styles
   /api/v1/users/me:
     get:
       consumes:

@@ -14,6 +14,9 @@ type Repository interface {
 	UpsertUser(ctx context.Context, user domain.UserModel) (domain.UserModel, error)
 	DeleteUser(ctx context.Context, userID string) error
 	GetUserByID(ctx context.Context, userID string) (domain.UserModel, error)
+
+	// styles
+	ListStyles(ctx context.Context) ([]domain.StyleModel, error)
 }
 
 type repository struct {
