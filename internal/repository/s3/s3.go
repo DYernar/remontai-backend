@@ -2,6 +2,7 @@ package s3
 
 import (
 	"context"
+	"fmt"
 
 	"cloud.google.com/go/storage"
 	"google.golang.org/api/option"
@@ -41,7 +42,11 @@ func (r *repository) UploadFile(ctx context.Context, file []byte, filename strin
 	bucket := r.client.Bucket(MediaBucketName)
 	obj := bucket.Object(filename)
 	w := obj.NewWriter(ctx)
-	w.Write(file)
+	n, err := w.Write(file)
+	if err != nil {
+		return err
+	}
+	fmt.Printf("Uploaded %d bytes to %s\n", n, filename)
 	w.Close()
 
 	return nil

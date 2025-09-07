@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	"github.com/DYernar/remontai-backend/internal/domain"
 	"github.com/gin-gonic/gin"
 )
@@ -35,9 +37,9 @@ func (app *App) CreateImageGenerationV1Handler(c *gin.Context, user domain.UserM
 
 	styleID := c.PostForm("styleid")
 
-	// Get uploaded file
 	file, header, err := c.Request.FormFile("image")
 	if err != nil {
+		fmt.Printf("Failed to get image file: %v\n", err)
 		c.JSON(400, gin.H{"error": "image file is required"})
 		return
 	}
@@ -45,6 +47,7 @@ func (app *App) CreateImageGenerationV1Handler(c *gin.Context, user domain.UserM
 
 	resp, err := app.generateService.QuickGenerateImage(c.Request.Context(), user.ID, file, header, roomType, styleID)
 	if err != nil {
+		fmt.Printf("Failed to generate image: %v\n", err)
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}

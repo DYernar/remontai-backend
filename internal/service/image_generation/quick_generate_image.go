@@ -4,12 +4,11 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"math/rand"
 	"mime/multipart"
 	"path/filepath"
-	"time"
 
 	"github.com/DYernar/remontai-backend/internal/domain"
+	"github.com/google/uuid"
 )
 
 func (s *service) QuickGenerateImage(
@@ -52,20 +51,21 @@ func (s *service) uploadToS3(ctx context.Context, file multipart.File, header *m
 	}
 
 	// Generate unique filename
-	timestamp := time.Now().Unix()
-	rand.Seed(time.Now().UnixNano())
-	randomID := rand.Intn(1000000)
+	// store to local folder
+
 	extension := filepath.Ext(header.Filename)
-	filename := fmt.Sprintf("uploads/%d_%d_%s%s", timestamp, randomID, "image", extension)
+	imageName := uuid.New().String()
+	filename := fmt.Sprintf("uploads/%s_%s%s", imageName, "image", extension)
 
 	// Upload to Google Cloud Storage
 	err = s.s3.UploadFile(ctx, fileBytes, filename)
 	if err != nil {
+		fmt.Printf("Failed to upload file to storage: %v\n", err)
 		return "", fmt.Errorf("failed to upload file to storage: %w", err)
 	}
 
-	// Return the public URL for Google Cloud Storage
-	// Format: https://storage.googleapis.com/bucket-name/object-name
+	fmt.Printf("Successfully uploaded file to storage: %s\n", filename)
+
 	publicURL := fmt.Sprintf("https://storage.googleapis.com/%s/%s", "remont_ai_media_storage", filename)
 
 	return publicURL, nil
