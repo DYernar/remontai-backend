@@ -2,10 +2,16 @@ app:
   env: "dev"
   port: 8080
 apple_signin_credentials:
-  team_id: 
-  client_id: 
-  key_id: 
+  team_id: 3GU35CCDS7
+  client_id: com.remont.ai
+  key_id: 7ZJK8TPVJ6
   private_key: |
+    -----BEGIN PRIVATE KEY-----
+    MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgvjK4ihX7GjB97bYX
+    jdj860Ja9nXz0mcFkcRVVd/3wUCgCgYIKoZIzj0DAQehRANCAAQaUMqETSdOaTVx
+    YjsL+Q9VNfwH3rOxobwq5TcMAqHdckCCXLKfVZRo4jNsLiTAnCz2rSs05bx5vweU
+    gXIuKqTv
+    -----END PRIVATE KEY-----
 
 google_signin_credentials:
   client_id: 1001417706537-eur4pkc6g5je771c3hnkgq3s78u0ki1q.apps.googleusercontent.com
