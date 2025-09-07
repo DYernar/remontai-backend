@@ -53,9 +53,8 @@ jobs:
             --min-instances 1 \
             --memory 512Mi \
             --cpu 1 \
-            --set-env-vars SERVICE_URL=$URL S3_CREDENTIALS="${{ secrets.S3_CREDENTIALS }}" \
+            --set-env-vars SERVICE_URL=$URL,S3_CREDENTIALS=${{ secrets.S3_CREDENTIALS }} \
             --quiet
-
 
       - name: Get Cloud Run Service URL
         run: |
