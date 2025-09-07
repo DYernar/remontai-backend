@@ -1,11 +1,10 @@
 package config
 
 import (
+	"encoding/base64"
 	"io/ioutil"
 	"log"
 
-	"github.com/caarlos0/env/v11"
-	_ "github.com/caarlos0/env/v11"
 	"gopkg.in/yaml.v2"
 )
 
@@ -13,7 +12,7 @@ type Config struct {
 	AppConfig               *AppConfig               `yaml:"app"`
 	AppleSigninCredentials  *AppleSigninCredentials  `yaml:"apple_signin_credentials"`
 	GoogleSigninCredentials *GoogleSigninCredentials `yaml:"google_signin_credentials"`
-	S3Credentials           string                   `env:"S3_CREDENTIALS" envDefault:"default-value-if-not-set"`
+	S3Credentials           string                   `yaml:"s3_credentials"`
 }
 
 type AppConfig struct {
@@ -46,9 +45,12 @@ func ParseConfig() (*Config, error) {
 		log.Fatalf("Unmarshal: %v", err)
 	}
 
-	if err := env.Parse(&conf); err != nil {
-		log.Fatalf("%+v", err)
+	decoded, err := base64.StdEncoding.DecodeString(conf.S3Credentials)
+	if err != nil {
+		panic(err)
 	}
+
+	conf.S3Credentials = string(decoded)
 
 	return &conf, nil
 }
