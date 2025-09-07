@@ -22,5 +22,5 @@ func (app *App) GetUserGenerationsV1Handler(c *gin.Context, user domain.UserMode
 		return
 	}
 
-	c.JSON(200, gin.H{"generations": generations})
+	c.JSON(200, generations)
 }
