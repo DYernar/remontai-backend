@@ -13,6 +13,8 @@ type Config struct {
 	AppleSigninCredentials  *AppleSigninCredentials  `yaml:"apple_signin_credentials"`
 	GoogleSigninCredentials *GoogleSigninCredentials `yaml:"google_signin_credentials"`
 	S3Credentials           string                   `yaml:"s3_credentials"`
+	FluxAPIKey              string                   `yaml:"flux_api_key"`
+	OpenAIAPIKey            string                   `yaml:"openai_api_key"`
 }
 
 type AppConfig struct {

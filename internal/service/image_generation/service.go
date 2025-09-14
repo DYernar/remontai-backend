@@ -4,6 +4,8 @@ import (
 	"context"
 	"mime/multipart"
 
+	"github.com/DYernar/remontai-backend/internal/client/flux"
+	"github.com/DYernar/remontai-backend/internal/client/openai"
 	"github.com/DYernar/remontai-backend/internal/config"
 	"github.com/DYernar/remontai-backend/internal/domain"
 	"github.com/DYernar/remontai-backend/internal/repository/postgres"
@@ -24,10 +26,12 @@ type Service interface {
 }
 
 type service struct {
-	logger *zap.SugaredLogger
-	config *config.Config
-	s3     s3.S3Repository
-	repo   postgres.Repository
+	logger       *zap.SugaredLogger
+	config       *config.Config
+	s3           s3.S3Repository
+	repo         postgres.Repository
+	fluxClient   *flux.FluxClient
+	openAIClient *openai.OpenAIClient
 }
 
 func NewService(
@@ -35,12 +39,16 @@ func NewService(
 	logger *zap.SugaredLogger,
 	s3 s3.S3Repository,
 	repo postgres.Repository,
+	fluxClient *flux.FluxClient,
+	openAIClient *openai.OpenAIClient,
 ) Service {
 	return &service{
-		repo:   repo,
-		logger: logger,
-		s3:     s3,
-		config: config,
+		repo:         repo,
+		logger:       logger,
+		s3:           s3,
+		config:       config,
+		fluxClient:   fluxClient,
+		openAIClient: openAIClient,
 	}
 }
 

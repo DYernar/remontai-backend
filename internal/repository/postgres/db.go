@@ -17,6 +17,7 @@ type Repository interface {
 
 	// styles
 	ListStyles(ctx context.Context) ([]domain.StyleModel, error)
+	GetStyleByID(ctx context.Context, styleID string) (domain.StyleModel, error)
 
 	// image generation
 	CreateImageGeneration(ctx context.Context, imageGen domain.ImageGenerationModel) (domain.ImageGenerationModel, error)

@@ -35,6 +35,37 @@ func (s *service) QuickGenerateImage(
 		ErrorMessage:      "",
 	}
 
+	style, err := s.repo.GetStyleByID(ctx, styleID)
+	if err != nil {
+		return domain.ImageGenerationModel{}, err
+	}
+
+	// imageLink, err := s.openAIClient.GenerateRoomDesign(
+	// 	ctx,
+	// 	style.Name,
+	// 	roomType,
+	// 	imageFile,
+	// )
+	// if err != nil {
+	// 	s.logger.Errorf("Error generating image", "error", err, "userid", userID)
+	// 	return domain.ImageGenerationModel{}, err
+	// }
+
+	// imageGen.GeneratedImageURL = imageLink
+
+	imageResp, err := s.fluxClient.GenerateImage(imageURL, style.Name, roomType)
+	if err != nil {
+		s.logger.Errorf("Error generating image", "error", err, "userid", userID)
+		return domain.ImageGenerationModel{}, err
+	}
+
+	if imageResp.Processing == nil || len(imageResp.Processing.FutureLinks) == 0 {
+		s.logger.Errorf("Error generating image: no future links", "userid", userID)
+		return domain.ImageGenerationModel{}, fmt.Errorf("no future links in flux response")
+	}
+
+	imageGen.GeneratedImageURL = imageResp.Processing.FutureLinks[0]
+
 	result, err := s.repo.CreateImageGeneration(ctx, imageGen)
 	if err != nil {
 		return domain.ImageGenerationModel{}, err
@@ -63,8 +94,6 @@ func (s *service) uploadToS3(ctx context.Context, file multipart.File, header *m
 		fmt.Printf("Failed to upload file to storage: %v\n", err)
 		return "", fmt.Errorf("failed to upload file to storage: %w", err)
 	}
-
-	fmt.Printf("Successfully uploaded file to storage: %s\n", filename)
 
 	publicURL := fmt.Sprintf("https://storage.googleapis.com/%s/%s", "remont_ai_media_storage", filename)
 

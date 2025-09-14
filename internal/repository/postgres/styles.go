@@ -36,3 +36,19 @@ func (r *repository) ListStyles(ctx context.Context) ([]domain.StyleModel, error
 
 	return styles, nil
 }
+
+func (r *repository) GetStyleByID(ctx context.Context, styleID string) (domain.StyleModel, error) {
+	query := `
+		SELECT id, name, description, image, created_at, updated_at 
+		FROM styles 
+		WHERE id = $1`
+
+	var style domain.StyleModel
+	err := r.conn.QueryRow(ctx, query, styleID).Scan(&style.ID, &style.Name, &style.Description,
+		&style.Image, &style.CreatedAt, &style.UpdatedAt)
+	if err != nil {
+		return domain.StyleModel{}, err
+	}
+
+	return style, nil
+}
