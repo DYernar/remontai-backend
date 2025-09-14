@@ -11,7 +11,6 @@ import (
 
 	"github.com/DYernar/remontai-backend/docs"
 	"github.com/DYernar/remontai-backend/internal/client/flux"
-	"github.com/DYernar/remontai-backend/internal/client/openai"
 	"github.com/DYernar/remontai-backend/internal/config"
 	"github.com/DYernar/remontai-backend/internal/repository/postgres"
 	"github.com/DYernar/remontai-backend/internal/repository/s3"
@@ -74,7 +73,6 @@ func NewApp(
 	swaggerHost = strings.ReplaceAll(swaggerHost, "http://", "")
 
 	fluxClient := flux.NewFluxClient(config.FluxAPIKey)
-	openAIClient := openai.NewOpenAIClient(config.OpenAIAPIKey)
 
 	s3Repo, err := s3.NewRepository(ctx, config.S3Credentials)
 	if err != nil {
@@ -94,7 +92,7 @@ func NewApp(
 		fluxClient:      fluxClient,
 		authService:     auth.NewService(config, logger, repo),
 		styleService:    styles.NewService(config, logger, repo),
-		generateService: imagegeneration.NewService(config, logger, s3Repo, repo, fluxClient, openAIClient),
+		generateService: imagegeneration.NewService(config, logger, s3Repo, repo, fluxClient),
 	}
 
 	return app, nil
