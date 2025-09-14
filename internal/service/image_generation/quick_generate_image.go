@@ -65,6 +65,7 @@ func (s *service) QuickGenerateImage(
 	}
 
 	imageGen.GeneratedImageURL = imageResp.Processing.FutureLinks[0]
+	imageGen.Status = domain.ImageGenerateStatusCompleted
 
 	result, err := s.repo.CreateImageGeneration(ctx, imageGen)
 	if err != nil {
