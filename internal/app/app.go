@@ -11,6 +11,7 @@ import (
 
 	"github.com/DYernar/remontai-backend/docs"
 	"github.com/DYernar/remontai-backend/internal/client/flux"
+	"github.com/DYernar/remontai-backend/internal/client/gemini"
 	"github.com/DYernar/remontai-backend/internal/config"
 	"github.com/DYernar/remontai-backend/internal/repository/postgres"
 	"github.com/DYernar/remontai-backend/internal/repository/s3"
@@ -39,7 +40,8 @@ type App struct {
 	Port        string
 	DBDSN       string
 
-	fluxClient *flux.FluxClient
+	fluxClient   *flux.FluxClient
+	geminiClient *gemini.Client
 
 	s3Repo s3.S3Repository
 	repo   postgres.Repository
@@ -74,6 +76,11 @@ func NewApp(
 
 	fluxClient := flux.NewFluxClient(config.FluxAPIKey)
 
+	geminiClient, err := gemini.NewClient(ctx, config.GeminiAPIKey)
+	if err != nil {
+		return nil, err
+	}
+
 	s3Repo, err := s3.NewRepository(ctx, config.S3Credentials)
 	if err != nil {
 		return nil, err
@@ -92,7 +99,7 @@ func NewApp(
 		fluxClient:      fluxClient,
 		authService:     auth.NewService(config, logger, repo),
 		styleService:    styles.NewService(config, logger, repo),
-		generateService: imagegeneration.NewService(config, logger, s3Repo, repo, fluxClient),
+		generateService: imagegeneration.NewService(config, logger, s3Repo, repo, fluxClient, geminiClient),
 	}
 
 	return app, nil
