@@ -45,46 +45,31 @@ func (s *service) QuickGenerateImage(
 		return domain.ImageGenerationModel{}, err
 	}
 
-	// imageLink, err := s.openAIClient.GenerateRoomDesign(
-	// 	ctx,
-	// 	style.Name,
-	// 	roomType,
-	// 	imageFile,
-	// )
-	// if err != nil {
-	// 	s.logger.Errorf("Error generating image", "error", err, "userid", userID)
-	// 	return domain.ImageGenerationModel{}, err
-	// }
-
-	// imageGen.GeneratedImageURL = imageLink
-
-	// imageResp, err := s.fluxClient.GenerateImage(imageURL, style.Name, roomType)
-	// if err != nil {
-	// 	s.logger.Errorf("Error generating image", "error", err, "userid", userID)
-	// 	return domain.ImageGenerationModel{}, err
-	// }
-
-	// if imageResp.Processing == nil || len(imageResp.Processing.FutureLinks) == 0 {
-	// 	s.logger.Errorf("Error generating image: no future links", "userid", userID)
-	// 	return domain.ImageGenerationModel{}, fmt.Errorf("no future links in flux response")
-	// }
-
-	// imageGen.GeneratedImageURL = imageResp.Processing.FutureLinks[0]
-
-	genImageResp, err := s.geminiClient.GenerateImage(fileBytes, style.Name, roomType)
+	imageLink, err := s.fluxClient.GenerateImageAndWait(
+		imageURL,
+		style.Name,
+		roomType,
+	)
 	if err != nil {
 		s.logger.Errorf("Error generating image", "error", err, "userid", userID)
 		return domain.ImageGenerationModel{}, err
 	}
 
-	// upload generated image to s3
-	uploadedImageURL, err := s.uploadByteImageToS3(ctx, genImageResp)
+	imageGen.GeneratedImageURL = imageLink
+
+	imageResp, err := s.fluxClient.GenerateImage(imageURL, style.Name, roomType)
 	if err != nil {
-		s.logger.Errorf("Error uploading generated image to S3", "error", err, "userid", userID)
+		s.logger.Errorf("Error generating image", "error", err, "userid", userID)
 		return domain.ImageGenerationModel{}, err
 	}
 
-	imageGen.GeneratedImageURL = uploadedImageURL
+	if imageResp.Processing == nil || len(imageResp.Processing.FutureLinks) == 0 {
+		s.logger.Errorf("Error generating image: no future links", "userid", userID)
+		return domain.ImageGenerationModel{}, fmt.Errorf("no future links in flux response")
+	}
+
+	imageGen.GeneratedImageURL = imageResp.Processing.FutureLinks[0]
+
 	imageGen.Status = domain.ImageGenerateStatusCompleted
 
 	result, err := s.repo.CreateImageGeneration(ctx, imageGen)
